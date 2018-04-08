@@ -12,8 +12,8 @@ const center = {x: width / 2, y: height / 2};
 
 export default function startGame() {
   return new Phaser.Game({
-    el: '.game',
     width, height,
+    parent: 'game',
     type: Phaser.AUTO,
     physics: {
       default: 'arcade',
