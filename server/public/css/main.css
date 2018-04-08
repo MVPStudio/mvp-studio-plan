@@ -298,7 +298,7 @@ nav .item {
     position: absolute;
     bottom: 0;
     display: none; /* initially */
-    transform: scale(.3);
+    transform: scale(.4);
     animation-duration: 3s;
     animation-name: butterFlight;
     right: -10000px;
