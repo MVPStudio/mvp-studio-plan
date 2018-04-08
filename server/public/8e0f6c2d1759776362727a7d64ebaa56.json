@@ -1,0 +1,124 @@
+{"frames": [
+
+{
+	"filename": "background.png",
+	"frame": {"x":1,"y":1,"w":1920,"h":1080},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1920,"h":1080},
+	"sourceSize": {"w":1920,"h":1080}
+},
+{
+	"filename": "cooking/1.png",
+	"frame": {"x":770,"y":1423,"w":50,"h":69},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":69},
+	"sourceSize": {"w":51,"h":69}
+},
+{
+	"filename": "cooking/2.png",
+	"frame": {"x":822,"y":1423,"w":50,"h":69},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":69},
+	"sourceSize": {"w":51,"h":69}
+},
+{
+	"filename": "cooking/3.png",
+	"frame": {"x":874,"y":1423,"w":50,"h":69},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":69},
+	"sourceSize": {"w":51,"h":69}
+},
+{
+	"filename": "fawkes_side.png",
+	"frame": {"x":1,"y":1083,"w":767,"h":450},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":7,"w":767,"h":450},
+	"sourceSize": {"w":780,"h":462}
+},
+{
+	"filename": "large/1.png",
+	"frame": {"x":1057,"y":1083,"w":150,"h":319},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":22,"w":150,"h":319},
+	"sourceSize": {"w":157,"h":346}
+},
+{
+	"filename": "large/2.png",
+	"frame": {"x":905,"y":1083,"w":150,"h":328},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":10,"w":150,"h":328},
+	"sourceSize": {"w":157,"h":346}
+},
+{
+	"filename": "large/3.png",
+	"frame": {"x":770,"y":1083,"w":133,"h":338},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":5,"w":133,"h":338},
+	"sourceSize": {"w":157,"h":346}
+},
+{
+	"filename": "small/1.png",
+	"frame": {"x":1481,"y":1289,"w":113,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":20,"w":113,"h":184},
+	"sourceSize": {"w":155,"h":209}
+},
+{
+	"filename": "small/2.png",
+	"frame": {"x":1249,"y":1345,"w":113,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":13,"w":113,"h":188},
+	"sourceSize": {"w":155,"h":209}
+},
+{
+	"filename": "small/3.png",
+	"frame": {"x":1364,"y":1289,"w":115,"h":193},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":3,"w":115,"h":193},
+	"sourceSize": {"w":155,"h":209}
+},
+{
+	"filename": "speech_bubble_a.png",
+	"frame": {"x":1273,"y":1083,"w":346,"h":204},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":7,"w":346,"h":204},
+	"sourceSize": {"w":352,"h":218}
+},
+{
+	"filename": "stick_a.png",
+	"frame": {"x":1249,"y":1083,"w":22,"h":260},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":22,"h":260},
+	"sourceSize": {"w":23,"h":262}
+},
+{
+	"filename": "stick_b.png",
+	"frame": {"x":1209,"y":1083,"w":38,"h":266},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":266},
+	"sourceSize": {"w":38,"h":269}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "scene.png",
+	"format": "RGBA8888",
+	"size": {"w":1922,"h":1534},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9e59d3a2d1a39a31c14a056b080ecde3:ffc2974862f4e27ca9c0c91bcb4b9344:b5ae526252a9bb5f811c6329b74d8d84$"
+}
+}
