@@ -41,6 +41,7 @@ function create() {
   const game = this;
   const logs = new Map();
   const sticks = new Map();
+  const marshmallowCookTime = 3000;
   const moonPosition = {
     x: 100,
     y: 100,
@@ -157,9 +158,14 @@ function create() {
   });
 
   socket.on('showFox', showFox);
-  socket.on('foxFed', async () => {
-    foxText.x = foxTextPosition.x + 15;
-    foxText.setText('Thanks!');
+  socket.on('foxFed', async stick => {
+    if(stick.cookLevel === 3) {
+      foxText.x = foxTextPosition.x;
+      foxText.setText('Yuck! It\'s burnt!');
+    } else {
+      foxText.x = foxTextPosition.x + 15;
+      foxText.setText('Thanks!');
+    }
     await wait(1000);
     hideFox();
   });
@@ -321,7 +327,7 @@ function create() {
             stick.setCookLevel(stick.cookLevel + 1);
             socket.emit('cook', stick);
           }
-        }, 1000);
+        }, marshmallowCookTime);
       } else {
         clearCookInterval();
       }
