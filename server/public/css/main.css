@@ -119,6 +119,8 @@ footer {
     height: 12rem;
     justify-content: center;
     margin-top: 5rem;
+    position: relative;
+    z-index: 3;
 }
 
 footer address {
