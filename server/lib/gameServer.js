@@ -59,7 +59,7 @@ function onConnect(socket, io) {
   socket.on('dropStick', stick => socket.broadcast.emit('dropStick', stick));
   socket.on('cook', stick => {
     socket.broadcast.emit('cook', stick);
-    if(stick.cookLevel === 3) {
+    if(stick.cookLevel === 2) {
       const now = Date.now();
       if(!foxVisible && (!lastFoxAppearence || now - lastFoxAppearence >= foxCooldown)) {
         foxVisible = true;
@@ -75,7 +75,7 @@ function onConnect(socket, io) {
     if(foxVisible) {
       foxVisible = false;
       lastFoxAppearence = Date.now();
-      io.emit('foxFed');
+      io.emit('foxFed', stick);
     }
   });
 
