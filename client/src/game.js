@@ -159,6 +159,8 @@ function create() {
 
   socket.on('showFox', showFox);
   socket.on('foxFed', async stick => {
+    console.log('foxFed');
+    sounds.bite.play();
     if(stick.cookLevel === 3) {
       foxText.x = foxTextPosition.x;
       foxText.setText('Yuck! It\'s burnt!');
