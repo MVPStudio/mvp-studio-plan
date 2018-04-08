@@ -31,7 +31,7 @@ function preload() {
   this.load.image('log_a', require('./assets/log_a.png'));
   this.load.image('log_b', require('./assets/log_b.png'));
   this.load.image('log_c', require('./assets/log_c.png'));
-  this.load.atlas('campingscene', require('./assets/scene.png'), require('file-loader!./assets/scene.json'));
+  this.load.atlas('campingscene', require('./assets/scene.png'), require('./assets/scene.json'));
 }
 
 function create() {
@@ -45,8 +45,8 @@ function create() {
   };
 
   const draggableLogAreaPosition = {
-    x: width * 0.8,
-    y: height - 50,
+    x: width * 0.7,
+    y: height - 80,
   };
 
   // Add fire and static logs around it
@@ -56,7 +56,7 @@ function create() {
   createLog({x: firePosition.x - 50, y: firePosition.y - 10, spriteId: 'log_a'});
   createLog({x: firePosition.x + 20, y: firePosition.y - 10, spriteId: 'log_b'});
 
-  createDraggableStick({x: width - 50, y: height - 150, spriteId: 'stick_a.png'});
+  createDraggableStick({x: width - 250, y: height - 150, spriteId: 'stick_a.png'});
 
   // Add draggable logs
   const draggableLogs = ['log_a', 'log_b', 'log_c'].map((spriteId, i) => {
@@ -299,7 +299,7 @@ function create() {
   }
 
   function setFireLevel(fireLevel) {
-    if(fireLevel <= 5) {
+    if(fireLevel <= 3) {
       setFireAnimation('small');
     } else {
       setFireAnimation('large');
