@@ -31,7 +31,7 @@ function preload() {
   this.load.image('log_a', require('./assets/log_a.png'));
   this.load.image('log_b', require('./assets/log_b.png'));
   this.load.image('log_c', require('./assets/log_c.png'));
-  this.load.atlas('campingscene', require('./assets/scene.png'), require('file-loader!./assets/scene.json'));
+  this.load.atlas('campingscene', require('./assets/scene.png'), require('./assets/scene.json'));
 }
 
 function create() {

@@ -108,6 +108,7 @@ body {
     background: url('../img/topsky.jpg') #00d2ff repeat-x top;
     background-size: 100% 300px;
     font-family: 'Gaegu', cursive;
+    overflow-x: hidden; /* clouds */
 }
 
 footer {
@@ -170,21 +171,70 @@ nav .item {
 
 .main {
     border: .2rem solid white;
+    position: relative;
+    z-index: 2;
 }
-/* 
-@media(max-width: 768px) {
-    .logo {
-        position: relative;
-        margin: 1rem 25%;
-        width: 50%;
+
+#corner-fox {
+    position: fixed;
+    bottom: 0;
+    left: -400px;
+    z-index: 3;
+    animation-delay: 2s;
+    animation-duration: 5s;
+    animation-name: foxden;
+}
+
+@keyframes foxden {
+    from {
+        left: -400px;
     }
-} */
+    25% {
+        left: 0;
+    }
+    75% {
+        left: 0;
+    }
+    to {
+        left: -400px;
+    }
+}
 
 
+.cloud {
+    position: absolute;
+    z-index: 1;
+    animation-duration: 120s;
+    animation-name: wind;
+    animation-iteration-count: infinite;
+}
 
+#cloud-1 {
+    left: -150px;
+    top: 300px;
+}
 
+#cloud-2 {
+    left: calc(100% - 200px);
+    top: 250px;
+}
 
+#cloud-3 {
+    left: calc(100% - 300px);
+    top: 600px;
+}
 
+@keyframes wind {
+    from {
+        margin-left: 0;
+    }
+    50% {
+        margin-left: 200px;
+    }
+    to {
+        margin-left: 0;
+    }
+}
 
 /* ==========================================================================
    Helper classes
