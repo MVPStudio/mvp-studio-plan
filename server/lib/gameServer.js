@@ -1,14 +1,18 @@
 const nanoid = require('nanoid');
 
+const maxFireLevel = 20;
+const minFireLevel = 1;
+const foxCooldown = 5000;
+let foxVisible = false;
+let lastFoxAppearence;
+let fireTimeout = null;
+let fireLevel = 1;
+
 module.exports = function startGameServer(io) {
   io.on('connection', socket => onConnect(socket, io));
 };
 
 function onConnect(socket, io) {
-  const maxFireLevel = 20;
-  const minFireLevel = 1;
-  let fireLevel = 1;
-
   const player = {
     id: nanoid(),
     x: Math.random() * 800,
@@ -19,7 +23,8 @@ function onConnect(socket, io) {
   socket.on('ready', () => {
     socket.emit('init', {
       yourId: player.id,
-      fireLevel
+      fireLevel,
+      foxVisible,
     });
     socket.broadcast.emit('addPlayer', player);
   });
@@ -28,6 +33,7 @@ function onConnect(socket, io) {
     if(fireLevel < maxFireLevel) {
       fireLevel += 1;
       io.emit('fireLevel', { fireLevel });
+      resetFireTimer();
     }
   });
 
@@ -38,16 +44,40 @@ function onConnect(socket, io) {
   socket.on('grabStick', stick => socket.broadcast.emit('grabStick', stick));
   socket.on('moveStick', stick => socket.broadcast.emit('moveStick', stick));
   socket.on('dropStick', stick => socket.broadcast.emit('dropStick', stick));
-  socket.on('cook', stick => socket.broadcast.emit('cook', stick));
-
-  socket.on('disconnect', () => {
-
+  socket.on('cook', stick => {
+    socket.broadcast.emit('cook', stick);
+    if(stick.cookLevel === 3) {
+      const now = Date.now();
+      if(!foxVisible && (!lastFoxAppearence || now - lastFoxAppearence >= foxCooldown)) {
+        console.log('showingFox');
+        foxVisible = true;
+        lastFoxAppearence = now;
+        io.emit('showFox', {
+          message: 'That looks tasty!',
+        });
+      }
+    }
   });
 
-  setInterval(() => {
-    if(fireLevel > minFireLevel) {
-      fireLevel -= 1;
-      io.emit('fireLevel', { fireLevel });
+  socket.on('feedFox', stick => {
+    if(foxVisible) {
+      console.log('Feeding fox');
+      foxVisible = false;
+      lastFoxAppearence = Date.now();
+      io.emit('foxFed');
     }
-  }, 10000);
+  });
+
+  socket.on('disconnect', () => {});
+
+  function resetFireTimer() {
+    if(fireTimeout) clearTimeout(fireTimeout);
+    fireTimeout = setTimeout(() => {
+      if(fireLevel > 1) {
+        fireLevel -= 1;
+        io.emit('fireLevel', { fireLevel });
+        resetFireTimer();
+      }
+    }, 10000);
+  }
 }
