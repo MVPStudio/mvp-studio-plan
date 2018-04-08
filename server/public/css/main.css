@@ -280,6 +280,42 @@ nav .item {
     transform: scale(0.33);
 }
 
+#caterpillar {
+    position: absolute;
+    bottom: 0;
+    animation-duration: 90s;
+    animation-name: catcrawl;
+}
+@keyframes catcrawl {
+    from {
+        right: -50px;
+    }
+    to {
+        right: 30px;
+    }
+}
+#butterfly {
+    position: absolute;
+    bottom: 0;
+    display: none; /* initially */
+    transform: scale(.3);
+    animation-duration: 3s;
+    animation-name: butterFlight;
+    right: -10000px;
+    opacity: 0;
+}
+@keyframes butterFlight {
+    from {
+        bottom: 0;
+        right: 15px;
+        opacity: 1;
+    }
+    to {
+        bottom: 500px; /* hopefully page height never exceeds this... */
+        right: 50px;
+        opacity: 0;
+    }
+}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
