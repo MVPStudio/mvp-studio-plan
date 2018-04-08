@@ -2,7 +2,7 @@ const nanoid = require('nanoid');
 
 const maxFireLevel = 20;
 const minFireLevel = 1;
-const foxCooldown = 5000;
+const foxCooldown = 1000;
 let foxVisible = false;
 let lastFoxAppearence;
 let fireTimeout = null;
@@ -49,7 +49,6 @@ function onConnect(socket, io) {
     if(stick.cookLevel === 3) {
       const now = Date.now();
       if(!foxVisible && (!lastFoxAppearence || now - lastFoxAppearence >= foxCooldown)) {
-        console.log('showingFox');
         foxVisible = true;
         lastFoxAppearence = now;
         io.emit('showFox', {
@@ -61,7 +60,6 @@ function onConnect(socket, io) {
 
   socket.on('feedFox', stick => {
     if(foxVisible) {
-      console.log('Feeding fox');
       foxVisible = false;
       lastFoxAppearence = Date.now();
       io.emit('foxFed');
