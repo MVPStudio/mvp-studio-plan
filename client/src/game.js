@@ -4,18 +4,20 @@ import config from '../config';
 import socket from './socket';
 import Phaser from './Phaser';
 import { wait, isOverlapping, isPointInRect } from './utils';
+import * as sounds from './sounds';
 
 const width = 960;
 const height = 540;
 const woodRespawnDelay = 5000; // ms
 
-const center = {x: width / 2, y: height / 2};
+const center = { x: width / 2, y: height / 2 };
 
 export default function startGame() {
   return new Phaser.Game({
     width, height,
     parent: 'game',
     type: Phaser.AUTO,
+    backgroundColor: '#00417b',
     physics: {
       default: 'arcade',
       arcade: {},
@@ -39,6 +41,10 @@ function create() {
   const game = this;
   const logs = new Map();
   const sticks = new Map();
+  const moonPosition = {
+    x: 100,
+    y: 100,
+  };
   const foxPosition = {
     x: -100,
     y: height - 80,
@@ -60,6 +66,7 @@ function create() {
     y: foxTextBubblePosition.y - 10,
   };
 
+  const moon = this.add.sprite(moonPosition.x, moonPosition.y, 'campingscene', 'moon.png').setScale(0.5).setInteractive();
   const background = this.add.sprite(center.x, center.y, 'campingscene', 'background.png').setScale(0.5);
   const trees = this.add.image(width - 25, center.y, 'trees').setScale(0.35);
   const fox = this.add.sprite(foxPosition.x, foxPosition.y, 'campingscene', 'fawkes_side.png').setScale(0.5);
@@ -86,7 +93,7 @@ function create() {
   createLog({x: firePosition.x + 20, y: firePosition.y - 10, spriteId: 'log_b'});
 
   // Add draggable sticks with marshmallows
-  createDraggableStick({x: 375, y: height - 150, spriteId: 'stick_a.png'});
+  createDraggableStick({x: 385, y: height - 150, spriteId: 'stick_a.png'});
   createDraggableStick({x: 400, y: height - 150, spriteId: 'stick_b.png'});
 
   // Add draggable logs
@@ -94,7 +101,7 @@ function create() {
     return createDraggableLog({
       spriteId,
       x: draggableLogAreaPosition.x + (i * 50),
-      y: draggableLogAreaPosition.y + ((Math.random() * 50) - 25)
+      y: draggableLogAreaPosition.y + ((Math.random() * 50) - 25),
     });
   });
 
@@ -157,12 +164,17 @@ function create() {
     hideFox();
   });
 
+  socket.on('hideMoon', hideMoon);
+  socket.on('showMoon', showMoon);
+
+  moon.on('pointerdown', () => socket.emit('touchMoon'));
+
   socket.emit('ready');
 
   function showFox() {
     foxText.x = foxTextPosition.x;
     foxText.setText('That looks tasty!');
-    game.tweens.add({
+    return tween({
       targets: [fox, foxText, foxTextBubble],
       alpha: 1,
       duration: 300
@@ -170,10 +182,41 @@ function create() {
   }
 
   function hideFox() {
-    game.tweens.add({
+    return tween({
       targets: [fox, foxText, foxTextBubble],
       alpha: 0,
       duration: 300
+    });
+  }
+
+  function showMoon() {
+    return tween({
+      targets: [moon],
+      y: moonPosition.y,
+      duration: 300
+    });
+  }
+
+  async function hideMoon() {
+    await tween({
+      targets: [moon],
+      angle: Math.random() * 40,
+      duration: 300,
+    });
+    await tween({
+      targets: [moon],
+      angle: Math.random() * -40,
+      duration: 600,
+    });
+    await tween({
+      targets: [moon],
+      angle: Math.random() * 40,
+      duration: 600,
+    });
+    await tween({
+      targets: [moon],
+      y: moonPosition.y + 300,
+      duration: 600,
     });
   }
 
@@ -263,7 +306,9 @@ function create() {
     sprites.stick.setInteractive();
     game.input.setDraggable(sprites.stick);
 
-    sprites.stick.on('dragstart', () => socket.emit('grabStick', stick));
+    sprites.stick.on('dragstart', () => {
+      socket.emit('grabStick', stick);
+    });
 
     sprites.stick.on('drag', (pointer, x, y) => {
       stick.updatePosition(x, y);
@@ -307,7 +352,10 @@ function create() {
     sprite.setInteractive();
     game.input.setDraggable(sprite);
 
-    sprite.on('dragstart', () => socket.emit('grabLog', log));
+    sprite.on('dragstart', () => {
+      sounds.grab.play();
+      socket.emit('grabLog', log);
+    });
 
     sprite.on('drag', (pointer, x, y) => {
       log.updatePosition(x, y);
@@ -318,6 +366,7 @@ function create() {
       socket.emit('dropLog', log);
       if(isOverlapping(sprite, fire)) {
         socket.emit('feedFire');
+        if(!sounds.fire.playing()) sounds.fire.play();
         log.reset(0);
         sprite.alpha = 0;
 
@@ -329,6 +378,7 @@ function create() {
           });
         }, woodRespawnDelay);
       } else {
+        sounds.drop.play();
         log.reset(100);
       }
     });
@@ -371,5 +421,12 @@ function create() {
     } else {
       setFireAnimation('large');
     }
+  }
+
+  // Wrap tween in a promise for easier use in async functions
+  function tween(animation) {
+    return new Promise(onComplete =>
+      game.tweens.add(Object.assign({}, animation, { onComplete }))
+    );
   }
 }

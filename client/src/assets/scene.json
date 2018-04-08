@@ -2,15 +2,15 @@
 
 {
 	"filename": "background.png",
-	"frame": {"x":1,"y":1,"w":1920,"h":1080},
+	"frame": {"x":1,"y":1,"w":1917,"h":833},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":1920,"h":1080},
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":247,"w":1917,"h":833},
 	"sourceSize": {"w":1920,"h":1080}
 },
 {
 	"filename": "cooking/1.png",
-	"frame": {"x":770,"y":1423,"w":50,"h":69},
+	"frame": {"x":770,"y":1176,"w":50,"h":69},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":69},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "cooking/2.png",
-	"frame": {"x":822,"y":1423,"w":50,"h":69},
+	"frame": {"x":822,"y":1176,"w":50,"h":69},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":69},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "cooking/3.png",
-	"frame": {"x":874,"y":1423,"w":50,"h":69},
+	"frame": {"x":874,"y":1176,"w":50,"h":69},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":69},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "fawkes_side.png",
-	"frame": {"x":1,"y":1083,"w":767,"h":450},
+	"frame": {"x":1,"y":836,"w":767,"h":450},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":6,"y":7,"w":767,"h":450},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "large/1.png",
-	"frame": {"x":1057,"y":1083,"w":150,"h":319},
+	"frame": {"x":1057,"y":836,"w":150,"h":319},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":6,"y":22,"w":150,"h":319},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "large/2.png",
-	"frame": {"x":905,"y":1083,"w":150,"h":328},
+	"frame": {"x":905,"y":836,"w":150,"h":328},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":10,"w":150,"h":328},
@@ -58,15 +58,23 @@
 },
 {
 	"filename": "large/3.png",
-	"frame": {"x":770,"y":1083,"w":133,"h":338},
+	"frame": {"x":770,"y":836,"w":133,"h":338},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":19,"y":5,"w":133,"h":338},
 	"sourceSize": {"w":157,"h":346}
 },
 {
+	"filename": "moon.png",
+	"frame": {"x":1209,"y":1104,"w":187,"h":180},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":187,"h":180},
+	"sourceSize": {"w":187,"h":180}
+},
+{
 	"filename": "small/1.png",
-	"frame": {"x":1481,"y":1289,"w":113,"h":184},
+	"frame": {"x":1621,"y":836,"w":113,"h":184},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":21,"y":20,"w":113,"h":184},
@@ -74,7 +82,7 @@
 },
 {
 	"filename": "small/2.png",
-	"frame": {"x":1249,"y":1345,"w":113,"h":188},
+	"frame": {"x":1515,"y":1042,"w":113,"h":188},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":21,"y":13,"w":113,"h":188},
@@ -82,7 +90,7 @@
 },
 {
 	"filename": "small/3.png",
-	"frame": {"x":1364,"y":1289,"w":115,"h":193},
+	"frame": {"x":1398,"y":1042,"w":115,"h":193},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":21,"y":3,"w":115,"h":193},
@@ -90,7 +98,7 @@
 },
 {
 	"filename": "speech_bubble_a.png",
-	"frame": {"x":1273,"y":1083,"w":346,"h":204},
+	"frame": {"x":1273,"y":836,"w":346,"h":204},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":3,"y":7,"w":346,"h":204},
@@ -98,7 +106,7 @@
 },
 {
 	"filename": "stick_a.png",
-	"frame": {"x":1249,"y":1083,"w":22,"h":260},
+	"frame": {"x":1249,"y":836,"w":22,"h":260},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":22,"h":260},
@@ -106,7 +114,7 @@
 },
 {
 	"filename": "stick_b.png",
-	"frame": {"x":1209,"y":1083,"w":38,"h":266},
+	"frame": {"x":1209,"y":836,"w":38,"h":266},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":266},
@@ -117,8 +125,8 @@
 	"version": "1.0",
 	"image": "scene.png",
 	"format": "RGBA8888",
-	"size": {"w":1922,"h":1534},
+	"size": {"w":1919,"h":1287},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:9e59d3a2d1a39a31c14a056b080ecde3:ffc2974862f4e27ca9c0c91bcb4b9344:b5ae526252a9bb5f811c6329b74d8d84$"
+	"smartupdate": "$TexturePacker:SmartUpdate:25935efd8f0fe2f52dbe76ca54ce1693:737f12b52a3a50a221781ef7d9065f0c:b5ae526252a9bb5f811c6329b74d8d84$"
 }
 }

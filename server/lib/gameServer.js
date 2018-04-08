@@ -3,6 +3,8 @@ const nanoid = require('nanoid');
 const maxFireLevel = 20;
 const minFireLevel = 1;
 const foxCooldown = 1000;
+const moonCooldown = 5000;
+let moonVisible = true;
 let foxVisible = false;
 let lastFoxAppearence;
 let fireTimeout = null;
@@ -34,6 +36,17 @@ function onConnect(socket, io) {
       fireLevel += 1;
       io.emit('fireLevel', { fireLevel });
       resetFireTimer();
+    }
+  });
+
+  socket.on('touchMoon', () => {
+    if(moonVisible) {
+      io.emit('hideMoon');
+
+      setTimeout(() => {
+        moonVisible = true;
+        io.emit('showMoon');
+      }, moonCooldown);
     }
   });
 
