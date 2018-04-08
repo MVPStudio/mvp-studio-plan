@@ -1,0 +1,27 @@
+{
+  "name": "childrens-museum-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx webpack",
+    "watch": "npx webpack --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "node-sass": "^4.8.3",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "nanoid": "^1.0.2",
+    "p2": "^0.7.1",
+    "phaser": "^3.3.0",
+    "pixi.js": "^4.7.3"
+  }
+}
