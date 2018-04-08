@@ -307,6 +307,7 @@ function create() {
     game.input.setDraggable(sprites.stick);
 
     sprites.stick.on('dragstart', () => {
+      sounds.grab.play();
       socket.emit('grabStick', stick);
     });
 
