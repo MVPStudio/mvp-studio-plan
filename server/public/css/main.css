@@ -492,3 +492,7 @@ nav .item {
         page-break-after: avoid;
     }
 }
+
+.decoration {
+  pointer-events: none;
+}
