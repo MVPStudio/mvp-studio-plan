@@ -207,7 +207,7 @@ nav .item {
     position: absolute;
     z-index: 1;
     animation-duration: 120s;
-    animation-name: wind;
+    animation-name: cloudwind;
     animation-iteration-count: infinite;
 }
 
@@ -226,7 +226,7 @@ nav .item {
     top: 600px;
 }
 
-@keyframes wind {
+@keyframes cloudwind {
     from {
         margin-left: 0;
     }
@@ -236,6 +236,48 @@ nav .item {
     to {
         margin-left: 0;
     }
+}
+
+@keyframes fernwind {
+    from {
+        transform: scale(.7) rotate(-30deg);
+    }
+    50% {
+        transform: scale(.7) rotate(-35deg);
+    }
+    to {
+        transform: scale(.7) rotate(-30deg);
+    }
+}
+
+#fern_a {
+    position: absolute;
+    bottom: -8px;
+    left: 30px;
+    z-index: 3;
+    transform-origin: bottom center;
+    animation-duration: 5s;
+    animation-name: fernwind;
+    animation-iteration-count: infinite;
+}
+
+#fern_b {
+    position: absolute;
+    bottom: -33px;
+    left: -20px;
+    z-index: 3;
+    transform-origin: bottom center;
+    animation-duration: 5s;
+    animation-name: fernwind;
+    animation-iteration-count: infinite;
+}
+
+#trees {
+    position: absolute;
+    bottom: -410px;
+    right: -320px;
+    z-index: 3;
+    transform: scale(0.33);
 }
 
 /* ==========================================================================
