@@ -1,8 +1,9 @@
 import { throttle, range } from 'lodash';
+import nanoid from 'nanoid';
 import config from '../config';
 import socket from './socket';
 import Phaser from './Phaser';
-import nanoid from 'nanoid';
+import { wait, isOverlapping, isPointInRect } from './utils';
 
 const width = 960;
 const height = 540;
@@ -17,9 +18,7 @@ export default function startGame() {
     type: Phaser.AUTO,
     physics: {
       default: 'arcade',
-      arcade: {
-        gravity: { y: 200 },
-      },
+      arcade: {},
     },
     scene: { preload, create },
   });
@@ -42,11 +41,11 @@ function create() {
   const sticks = new Map();
   const foxPosition = {
     x: -100,
-    y: height - 100,
+    y: height - 80,
   };
   const foxTextBubblePosition = {
     x: foxPosition.x + 280,
-    y: foxPosition.y - 90
+    y: foxPosition.y - 90,
   };
   const firePosition = {
     x: 300,
@@ -67,13 +66,13 @@ function create() {
   const foxTextBubble = this.add.sprite(foxTextBubblePosition.x, foxTextBubblePosition.y, 'campingscene', 'speech_bubble_a.png').setScale(0.5);
   const foxText = this.add.text(foxTextPosition.x, foxTextPosition.y, 'That looks tasty!', {
     font: '15px arial',
-    fill: '#000000'
+    fill: '#000000',
   });
   const foxMouthArea = {
     x: fox.x + 150,
     y: fox.y - 75,
     width: 50,
-    height: 50
+    height: 50,
   };
   fox.alpha = 0;
   foxTextBubble.alpha = 0;
@@ -152,8 +151,8 @@ function create() {
 
   socket.on('showFox', showFox);
   socket.on('foxFed', async () => {
-    foxText.x = foxTextPosition.x + 30;
-    foxText.setText('Yum!');
+    foxText.x = foxTextPosition.x + 15;
+    foxText.setText('Thanks!');
     await wait(1000);
     hideFox();
   });
@@ -372,31 +371,5 @@ function create() {
     } else {
       setFireAnimation('large');
     }
-  }
-
-  function getTopLeft(sprite) {
-    return {
-      x: sprite.x - (sprite.width / 2),
-      y: sprite.y - (sprite.height / 2),
-    };
-  }
-
-  function isOverlapping(spriteA, spriteB) {
-    const topLeft = getTopLeft(spriteB);
-    return spriteA.x >= topLeft.x &&
-      spriteA.y >= topLeft.y &&
-      spriteA.x < (topLeft.x + spriteB.width) &&
-      spriteA.y < (topLeft.y + spriteB.height);
-  }
-
-  function isPointInRect(point, rect) {
-    return point.x >= rect.x &&
-      point.y >= rect.y &&
-      point.x < rect.x + rect.width &&
-      point.y < rect.y + rect.height;
-  }
-
-  function wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
