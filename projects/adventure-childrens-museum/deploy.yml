@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a task, service, and ELB for this project
+Parameters:
+  Cluster:
+     Description: The name of the cluster where we should deploy
+     Type: String
+     Default: stage
+Resources:
+  taskdefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ContainerDefinitions:
+        - Name: museum-adventure
+          Image: !Sub
+            - 937163516619.dkr.ecr.us-west-2.amazonaws.com/museum-adventure:${cluster}
+            - { cluster: !Ref Cluster }
+          PortMappings:
+            - ContainerPort: 8080
+              HostPort: 8080
+          Essential: 'true'
+      Cpu: '256'
+      Memory: '512'
+      Family: museum-adventure
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+         - FARGATE
+      ExecutionRoleArn:
+         Fn::ImportValue: !Sub "${Cluster}:ECSTaskRole"
+
+          #  elb:
+          #    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+          #    Properties:
+          #      LoadBalancerName: !Ref LoadBalancerName
+          #      Listeners:
+          #        - InstancePort: !Ref AppHostPort
+          #          LoadBalancerPort: '80'
+          #          Protocol: HTTP
+          #      Subnets:
+          #        - !Ref Subnet1
+          #  service:
+          #    Type: 'AWS::ECS::Service'
+          #    Properties:
+          #      Cluster: !Ref cluster
+          #      DeploymentConfiguration:
+          #        MaximumPercent: 200
+          #        MinimumHealthyPercent: 100
+          #      DesiredCount: 0
+          #      HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
+          #      LoadBalancers:
+          #        - ContainerName: !Ref AppName
+          #          ContainerPort: !Ref AppContainerPort
+          #          LoadBalancerName: !Ref elb
+          #      PlacementStrategies:
+          #        - Type: binpack
+          #          Field: memory
+          #        - Type: spread
+          #          Field: host
+          #      PlacementConstraints:
+          #        - Type: memberOf
+          #          Expression: 'attribute:ecs.availability-zone != us-east-1d'
+          #        - Type: distinctInstance
+          #      TaskDefinition: !Ref taskdefinition
+          #      ServiceName: !Ref ServiceName
+          #      Role: !Ref Role

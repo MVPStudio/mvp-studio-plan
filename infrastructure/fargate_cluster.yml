@@ -326,3 +326,8 @@ Outputs:
     Value: !GetAtt 'PublicLoadBalancerSG.GroupId'
     Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicELBSecGroup' ] ]
+  ECSTaskRole:
+     Description: The ARN of the role that ECS tasks should have (so they can pull ECR containers)
+     Value: !GetAtt 'ECSTaskExecutionRole.Arn'
+     Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSTaskRole' ] ]
