@@ -17,7 +17,7 @@ was last built so you don't know what software it contained. Instead, we use exp
 # MVP User
 
 It is generally considered [a bad idea](https://www.oreilly.com/ideas/five-security-concerns-when-using-docker) to run
-apps in Docker containers as root. Thus we run all apps as the `revl` user (which is created in our base image).
+apps in Docker containers as root. Thus we run all apps as the `mvp` user (which is created in our base image).
 
 # App Location
 
