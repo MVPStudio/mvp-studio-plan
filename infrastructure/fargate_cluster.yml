@@ -213,10 +213,12 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateRouteTableTwo
       SubnetId: !Ref PrivateSubnetTwo
-      #
-      #  # ECS Resources
-      #  ECSCluster:
-      #    Type: AWS::ECS::Cluster
+  
+  # ECS Resources
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+       ClusterName: !Ref AWS::StackName
       #
       #  # A security group for the containers we will run in Fargate.
       #  # Three rules, allowing network traffic from a public facing load
