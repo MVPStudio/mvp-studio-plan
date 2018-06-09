@@ -326,8 +326,43 @@ Outputs:
     Value: !GetAtt 'PublicLoadBalancerSG.GroupId'
     Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicELBSecGroup' ] ]
+  ContainerSecGroup:
+    Description: The id of the security group contains should have so they can talk to ELBs
+    Value: !GetAtt 'FargateContainerSecurityGroup.GroupId'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ContainerSecGroup' ] ]
   ECSTaskRole:
      Description: The ARN of the role that ECS tasks should have (so they can pull ECR containers)
+     Value: !GetAtt 'ECSRole.Arn'
+     Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSServiceRole' ] ]
+  ECSServiceRole:
+     Description: The ARN of the role that ECS services should have (so they can attach to ELBs, etc.)
      Value: !GetAtt 'ECSTaskExecutionRole.Arn'
      Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSTaskRole' ] ]
+  PublicSubnetOne:
+    Description: Public subnet one
+    Value: !Ref 'PublicSubnetOne'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicSubnetOne' ] ]
+  PublicSubnetTwo:
+    Description: Public subnet two
+    Value: !Ref 'PublicSubnetTwo'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicSubnetTwo' ] ]
+  PrivateSubnetOne:
+    Description: Private subnet one
+    Value: !Ref 'PrivateSubnetOne'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PrivateSubnetOne' ] ]
+  PrivateSubnetTwo:
+    Description: Private subnet two
+    Value: !Ref 'PrivateSubnetTwo'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PrivateSubnetTwo' ] ]
+  VPCId:
+    Description: The ID of the VPC that this stack is deployed in
+    Value: !Ref 'VPC'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'VPCId' ] ]

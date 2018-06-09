@@ -5,8 +5,10 @@ Parameters:
      Description: The name of the cluster where we should deploy
      Type: String
      Default: stage
+
 Resources:
-  taskdefinition:
+  # The task definition that says what container to run, what resources it needs, etc.
+  TaskDefinition:
     Type: 'AWS::ECS::TaskDefinition'
     Properties:
       ContainerDefinitions:
@@ -27,38 +29,74 @@ Resources:
       ExecutionRoleArn:
          Fn::ImportValue: !Sub "${Cluster}:ECSTaskRole"
 
-          #  elb:
-          #    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
-          #    Properties:
-          #      LoadBalancerName: !Ref LoadBalancerName
-          #      Listeners:
-          #        - InstancePort: !Ref AppHostPort
-          #          LoadBalancerPort: '80'
-          #          Protocol: HTTP
-          #      Subnets:
-          #        - !Ref Subnet1
-          #  service:
-          #    Type: 'AWS::ECS::Service'
-          #    Properties:
-          #      Cluster: !Ref cluster
-          #      DeploymentConfiguration:
-          #        MaximumPercent: 200
-          #        MinimumHealthyPercent: 100
-          #      DesiredCount: 0
-          #      HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
-          #      LoadBalancers:
-          #        - ContainerName: !Ref AppName
-          #          ContainerPort: !Ref AppContainerPort
-          #          LoadBalancerName: !Ref elb
-          #      PlacementStrategies:
-          #        - Type: binpack
-          #          Field: memory
-          #        - Type: spread
-          #          Field: host
-          #      PlacementConstraints:
-          #        - Type: memberOf
-          #          Expression: 'attribute:ecs.availability-zone != us-east-1d'
-          #        - Type: distinctInstance
-          #      TaskDefinition: !Ref taskdefinition
-          #      ServiceName: !Ref ServiceName
-          #      Role: !Ref Role
+  # An ELB that we can expose our service on
+  ELB:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Name: !Ref AWS::StackName
+      Scheme: internet-facing
+      Type: application
+      Subnets:
+        - Fn::ImportValue: !Sub "${Cluster}:PublicSubnetOne"
+        - Fn::ImportValue: !Sub "${Cluster}:PublicSubnetTwo"
+      SecurityGroups:
+         - Fn::ImportValue: !Sub "${Cluster}:PublicELBSecGroup"
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+
+  ELBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      TargetType: ip
+      Name: !Ref 'AWS::StackName'
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId:
+         Fn::ImportValue: !Sub "${Cluster}:VPCId"
+
+   # Create a rule on the load balancer for routing traffic to the target group
+  ELBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'ELBTargetGroup'
+          Type: 'forward'
+      LoadBalancerArn: !Ref ELB
+      Port: 80
+      Protocol: HTTP
+
+
+  # A service which says how many copies of our task to run, etc.
+  Service:
+    Type: 'AWS::ECS::Service'
+    DependsOn: ELBListener
+    Properties:
+      ServiceName: museum-adventure
+      LaunchType: FARGATE
+      Cluster: !Ref Cluster
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 1
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue:
+               !Sub "${Cluster}:ContainerSecGroup"
+          Subnets:
+             - Fn::ImportValue: !Sub "${Cluster}:PrivateSubnetOne"
+             - Fn::ImportValue: !Sub "${Cluster}:PrivateSubnetTwo"
+      LoadBalancers:
+        - ContainerName: museum-adventure
+          ContainerPort: 8080
+          TargetGroupArn: !Ref ELBTargetGroup
+      TaskDefinition: !Ref TaskDefinition
+
