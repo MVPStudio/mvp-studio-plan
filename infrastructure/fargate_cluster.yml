@@ -146,82 +146,73 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnetTwo
       RouteTableId: !Ref PublicRouteTable
-      #
-      #  # Setup networking resources for the private subnets. Containers
-      #  # in these subnets have only private IP addresses, and must use a NAT
-      #  # gateway to talk to the internet. We launch two NAT gateways, one for
-      #  # each private subnet.
-      #  NatGatewayOneAttachment:
-      #    Type: AWS::EC2::EIP
-      #    DependsOn: GatewayAttachement
-      #    Properties:
-      #        Domain: vpc
-      #  NatGatewayTwoAttachment:
-      #    Type: AWS::EC2::EIP
-      #    DependsOn: GatewayAttachement
-      #    Properties:
-      #        Domain: vpc
-      #  NatGatewayOne:
-      #    Type: AWS::EC2::NatGateway
-      #    Properties:
-      #      AllocationId: !GetAtt NatGatewayOneAttachment.AllocationId
-      #      SubnetId: !Ref PublicSubnetOne
-      #  NatGatewayTwo:
-      #    Type: AWS::EC2::NatGateway
-      #    Properties:
-      #      AllocationId: !GetAtt NatGatewayTwoAttachment.AllocationId
-      #      SubnetId: !Ref PublicSubnetTwo
-      #  PrivateRouteTableOne:
-      #    Type: AWS::EC2::RouteTable
-      #    Properties:
-      #      VpcId: !Ref 'VPC'
-      #  PrivateRouteOne:
-      #    Type: AWS::EC2::Route
-      #    Properties:
-      #      RouteTableId: !Ref PrivateRouteTableOne
-      #      DestinationCidrBlock: 0.0.0.0/0
-      #      NatGatewayId: !Ref NatGatewayOne
-      #  PrivateRouteTableOneAssociation:
-      #    Type: AWS::EC2::SubnetRouteTableAssociation
-      #    Properties:
-      #      RouteTableId: !Ref PrivateRouteTableOne
-      #      SubnetId: !Ref PrivateSubnetOne
-      #  PrivateRouteTableTwo:
-      #    Type: AWS::EC2::RouteTable
-      #    Properties:
-      #      VpcId: !Ref 'VPC'
-      #  PrivateRouteTwo:
-      #    Type: AWS::EC2::Route
-      #    Properties:
-      #      RouteTableId: !Ref PrivateRouteTableTwo
-      #      DestinationCidrBlock: 0.0.0.0/0
-      #      NatGatewayId: !Ref NatGatewayTwo
-      #  PrivateRouteTableTwoAssociation:
-      #    Type: AWS::EC2::SubnetRouteTableAssociation
-      #    Properties:
-      #      RouteTableId: !Ref PrivateRouteTableTwo
-      #      SubnetId: !Ref PrivateSubnetTwo
-      #
-      #  # OPTIONAL: VPC Endpoint for DynamoDB
-      #  # If a container needs to access DynamoDB this allows a container in the private subnet
-      #  # to talk to DynamoDB directly without needing to go via the NAT gateway. This reduces
-      #  # the amount of bandwidth through the gateway, meaning that the gateway is free to serve
-      #  # your other traffic.
-      #  DynamoDBEndpoint:
-      #    Type: AWS::EC2::VPCEndpoint
-      #    Properties:
-      #      PolicyDocument:
-      #        Version: "2012-10-17"
-      #        Statement:
-      #          - Effect: Allow
-      #            Action: "*"
-      #            Principal: "*"
-      #            Resource: "*"
-      #      RouteTableIds:
-      #        - !Ref 'PrivateRouteTableOne'
-      #        - !Ref 'PrivateRouteTableTwo'
-      #      ServiceName: !Join [ "", [ "com.amazonaws.", { "Ref": "AWS::Region" }, ".dynamodb" ] ]
-      #      VpcId: !Ref 'VPC'
+  
+  # Setup networking resources for the private subnets. Containers
+  # in these subnets have only private IP addresses, and must use a NAT
+  # gateway to talk to the internet. We launch two NAT gateways, one for
+  # each private subnet.
+  NatGatewayOneAttachment:
+    Type: AWS::EC2::EIP
+    DependsOn: GatewayAttachement
+    Properties:
+        Domain: vpc
+  NatGatewayTwoAttachment:
+    Type: AWS::EC2::EIP
+    DependsOn: GatewayAttachement
+    Properties:
+        Domain: vpc
+  NatGatewayOne:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGatewayOneAttachment.AllocationId
+      SubnetId: !Ref PublicSubnetOne
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  NatGatewayTwo:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGatewayTwoAttachment.AllocationId
+      SubnetId: !Ref PublicSubnetTwo
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  PrivateRouteTableOne:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  PrivateRouteOne:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableOne
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGatewayOne
+  PrivateRouteTableOneAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableOne
+      SubnetId: !Ref PrivateSubnetOne
+  PrivateRouteTableTwo:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  PrivateRouteTwo:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableTwo
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGatewayTwo
+  PrivateRouteTableTwoAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableTwo
+      SubnetId: !Ref PrivateSubnetTwo
       #
       #  # ECS Resources
       #  ECSCluster:
