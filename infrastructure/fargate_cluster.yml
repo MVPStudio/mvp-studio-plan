@@ -219,39 +219,40 @@ Resources:
     Type: AWS::ECS::Cluster
     Properties:
        ClusterName: !Ref AWS::StackName
-      #
-      #  # A security group for the containers we will run in Fargate.
-      #  # Three rules, allowing network traffic from a public facing load
-      #  # balancer, a private internal load balancer, and from other members
-      #  # of the security group.
-      #  #
-      #  # Remove any of the following ingress rules that are not needed.
-      #  FargateContainerSecurityGroup:
-      #    Type: AWS::EC2::SecurityGroup
-      #    Properties:
-      #      GroupDescription: Access to the Fargate containers
-      #      VpcId: !Ref 'VPC'
-      #  EcsSecurityGroupIngressFromPublicALB:
-      #    Type: AWS::EC2::SecurityGroupIngress
-      #    Properties:
-      #      Description: Ingress from the public ALB
-      #      GroupId: !Ref 'FargateContainerSecurityGroup'
-      #      IpProtocol: -1
-      #      SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
-      #  EcsSecurityGroupIngressFromPrivateALB:
-      #    Type: AWS::EC2::SecurityGroupIngress
-      #    Properties:
-      #      Description: Ingress from the private ALB
-      #      GroupId: !Ref 'FargateContainerSecurityGroup'
-      #      IpProtocol: -1
-      #      SourceSecurityGroupId: !Ref 'PrivateLoadBalancerSG'
-      #  EcsSecurityGroupIngressFromSelf:
-      #    Type: AWS::EC2::SecurityGroupIngress
-      #    Properties:
-      #      Description: Ingress from other containers in the same security group
-      #      GroupId: !Ref 'FargateContainerSecurityGroup'
-      #      IpProtocol: -1
-      #      SourceSecurityGroupId: !Ref 'FargateContainerSecurityGroup'
+  
+  # A security group for the containers we will run in Fargate.
+  # Allow traffic from load balancers (any ELBs you create will have to be
+  # in the security group created by the PublicLoadBalancerSG below). 
+  FargateContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Fargate containers
+      VpcId: !Ref 'VPC'
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  PublicLoadBalancerSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to any public load balancers
+      VpcId: !Ref 'VPC'
+      SecurityGroupIngress:
+          # Allow access to ALB from anywhere on the internet
+          - CidrIp: 0.0.0.0/0
+            IpProtocol: -1
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  EcsSecurityGroupIngressFromPublicALB:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from the public ALB
+      GroupId: !Ref 'FargateContainerSecurityGroup'
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
       #
       #  # Load balancers for getting traffic to containers.
       #  # This sample template creates two load balancers:
@@ -266,15 +267,6 @@ Resources:
       #
       #  # A public facing load balancer, this is used for accepting traffic from the public
       #  # internet and directing it to public facing microservices
-      #  PublicLoadBalancerSG:
-      #    Type: AWS::EC2::SecurityGroup
-      #    Properties:
-      #      GroupDescription: Access to the public facing load balancer
-      #      VpcId: !Ref 'VPC'
-      #      SecurityGroupIngress:
-      #          # Allow access to ALB from anywhere on the internet
-      #          - CidrIp: 0.0.0.0/0
-      #            IpProtocol: -1
       #  PublicLoadBalancer:
       #    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       #    Properties:
