@@ -320,3 +320,9 @@ Resources:
                 - 'logs:CreateLogStream'
                 - 'logs:PutLogEvents'
               Resource: '*'
+Outputs:
+  ELBSecGroup:
+    Description: The id of the public ELB security group
+    Value: !GetAtt 'PublicLoadBalancerSG.GroupId'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicELBSecGroup' ] ]
