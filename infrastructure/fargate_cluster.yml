@@ -107,38 +107,45 @@ Resources:
            Value: !Ref AWS::StackName
          - Key: Public
            Value: False
-      #
-      #  # Setup networking resources for the public subnets. Containers
-      #  # in the public subnets have public IP addresses and the routing table
-      #  # sends network traffic via the internet gateway.
-      #  InternetGateway:
-      #    Type: AWS::EC2::InternetGateway
-      #  GatewayAttachement:
-      #    Type: AWS::EC2::VPCGatewayAttachment
-      #    Properties:
-      #      VpcId: !Ref 'VPC'
-      #      InternetGatewayId: !Ref 'InternetGateway'
-      #  PublicRouteTable:
-      #    Type: AWS::EC2::RouteTable
-      #    Properties:
-      #      VpcId: !Ref 'VPC'
-      #  PublicRoute:
-      #    Type: AWS::EC2::Route
-      #    DependsOn: GatewayAttachement
-      #    Properties:
-      #      RouteTableId: !Ref 'PublicRouteTable'
-      #      DestinationCidrBlock: '0.0.0.0/0'
-      #      GatewayId: !Ref 'InternetGateway'
-      #  PublicSubnetOneRouteTableAssociation:
-      #    Type: AWS::EC2::SubnetRouteTableAssociation
-      #    Properties:
-      #      SubnetId: !Ref PublicSubnetOne
-      #      RouteTableId: !Ref PublicRouteTable
-      #  PublicSubnetTwoRouteTableAssociation:
-      #    Type: AWS::EC2::SubnetRouteTableAssociation
-      #    Properties:
-      #      SubnetId: !Ref PublicSubnetTwo
-      #      RouteTableId: !Ref PublicRouteTable
+  
+  # Setup networking resources for the public subnets. Containers
+  # in the public subnets have public IP addresses and the routing table
+  # sends network traffic via the internet gateway.
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  GatewayAttachement:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref 'VPC'
+      InternetGatewayId: !Ref 'InternetGateway'
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+         - Key: Name
+           Value: !Ref AWS::StackName
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachement
+    Properties:
+      RouteTableId: !Ref 'PublicRouteTable'
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref 'InternetGateway'
+  PublicSubnetOneRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetOne
+      RouteTableId: !Ref PublicRouteTable
+  PublicSubnetTwoRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetTwo
+      RouteTableId: !Ref PublicRouteTable
       #
       #  # Setup networking resources for the private subnets. Containers
       #  # in these subnets have only private IP addresses, and must use a NAT
