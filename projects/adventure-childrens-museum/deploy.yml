@@ -7,6 +7,12 @@ Parameters:
      Default: stage
 
 Resources:
+  # Create a logs group for our app
+  LogGroup: 
+     Type: "AWS::Logs::LogGroup"
+     Properties: 
+       LogGroupName: !Ref AWS::StackName
+       RetentionInDays: 7
   # The task definition that says what container to run, what resources it needs, etc.
   TaskDefinition:
     Type: 'AWS::ECS::TaskDefinition'
@@ -20,6 +26,12 @@ Resources:
             - ContainerPort: 8080
               HostPort: 8080
           Essential: 'true'
+          LogConfiguration:
+             LogDriver: awslogs
+             Options:
+                awslogs-group: !Ref AWS::StackName
+                awslogs-region: us-west-2
+                awslogs-stream-prefix: museum
       Cpu: '256'
       Memory: '512'
       Family: !Ref AWS::StackName
