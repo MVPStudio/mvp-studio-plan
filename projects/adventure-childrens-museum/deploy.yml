@@ -12,7 +12,7 @@ Resources:
     Type: 'AWS::ECS::TaskDefinition'
     Properties:
       ContainerDefinitions:
-        - Name: museum-adventure
+        - Name: !Ref AWS::StackName
           Image: !Sub
             - 937163516619.dkr.ecr.us-west-2.amazonaws.com/museum-adventure:${cluster}
             - { cluster: !Ref Cluster }
@@ -78,7 +78,7 @@ Resources:
     Type: 'AWS::ECS::Service'
     DependsOn: ELBListener
     Properties:
-      ServiceName: museum-adventure
+      ServiceName: !Ref AWS::StackName
       LaunchType: FARGATE
       Cluster: !Ref Cluster
       DeploymentConfiguration:
