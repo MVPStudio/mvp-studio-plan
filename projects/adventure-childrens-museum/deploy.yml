@@ -12,7 +12,7 @@ Resources:
     Type: 'AWS::ECS::TaskDefinition'
     Properties:
       ContainerDefinitions:
-        - Name: !Ref AWS::StackName
+        - Name: museum-adventure
           Image: !Sub
             - 937163516619.dkr.ecr.us-west-2.amazonaws.com/museum-adventure:${cluster}
             - { cluster: !Ref Cluster }
@@ -22,7 +22,7 @@ Resources:
           Essential: 'true'
       Cpu: '256'
       Memory: '512'
-      Family: museum-adventure
+      Family: !Ref AWS::StackName
       NetworkMode: awsvpc
       RequiresCompatibilities:
          - FARGATE
