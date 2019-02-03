@@ -2,7 +2,7 @@
 
 We base *all* of our images off this base image. 
 
-This lives in our ECR repo as `937163516619.dkr.ecr.us-west-2.amazonaws.com/base:<VERSION>`.
+This lives in our ECR repo as `mvpstudio/base:<VERSION>`.
 
 # Debian
 
